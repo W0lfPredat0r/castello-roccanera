@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="it" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Il Castello di Roccanera: L'Ultimo Enigma del Conte</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Roccanera Dusk -->
+    <!-- Application Structure Plan: Ho progettato una SPA a scorrimento verticale con una barra di navigazione fissa per presentare il progetto a potenziali stakeholder. La struttura è tematica e non lineare, per facilitare la comprensione: 1. Hero Section (per catturare l'attenzione con il pitch). 2. La Visione (per definire il 'cosa' e il 'perché'). 3. L'Esperienza (sezione interattiva con tab per spiegare le complesse meccaniche di gioco). 4. Piano di Progetto (con un grafico per il budget e una timeline). 5. Mercato e Futuro (per dimostrare la validità del business). Questa architettura trasforma un documento di testo in una narrazione interattiva e persuasiva, ottimizzata per la chiarezza e l'impatto. -->
+    <!-- Visualization & Content Choices: Report Info: Budget -> Goal: Mostrare la distribuzione dei costi -> Viz: Grafico a ciambella (Doughnut Chart) -> Interaction: Tooltip su hover -> Justification: Un grafico è più immediato di una tabella per comunicare le proporzioni del budget. Report Info: Meccaniche di gioco -> Goal: Organizzare informazioni complesse -> Viz: Sistema a tab -> Interaction: Click per cambiare tab -> Justification: Evita un muro di testo, rendendo le meccaniche facili da digerire. Report Info: Fasi del progetto -> Goal: Mostrare la sequenza temporale -> Viz: Timeline orizzontale (HTML/CSS) -> Justification: Visualizza chiaramente la progressione del progetto. Library/Method: Chart.js per il grafico, Vanilla JS per le interazioni. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF8; /* Fallback color */
+            background-image: url('pngtree-seamless-stone-brick-wall-as-textured-background-seamless-stone-brick-wall-picture-image_2900567.jpg-2225edb9-3ae5-4ec1-98ff-345d86777be9'); /* Real light brick texture provided by user */
+            background-repeat: repeat;
+            background-size: 250px; /* Adjust size for desired brick scale */
+            color: #4B4B4B;
+        }
+        h1, h2, h3, .font-display {
+            font-family: 'Cormorant Garamond', serif;
+        }
+        .active-nav {
+            color: #A37A57;
+            font-weight: 600;
+        }
+        .tab-active {
+            border-color: #A37A57;
+            background-color: #F3EFEA;
+            color: #A37A57;
+        }
+        .tab-inactive {
+            border-color: transparent;
+            background-color: transparent;
+            color: #6B7280;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 450px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header id="header" class="bg-white/80 backdrop-blur-md fixed top-0 left-0 right-0 z-50 shadow-sm">
+        <div class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <a href="#hero" class="text-xl font-bold font-display text-[#A37A57]">Roccanera</a>
+            <nav class="hidden md:flex space-x-8">
+                <a href="#visione" class="nav-link text-gray-600 hover:text-[#A37A57] transition-colors">La Visione</a>
+                <a href="#esperienza" class="nav-link text-gray-600 hover:text-[#A37A57] transition-colors">L'Esperienza</a>
+                <a href="#progetto" class="nav-link text-gray-600 hover:text-[#A37A57] transition-colors">Il Progetto</a>
+                <a href="#mercato" class="nav-link text-gray-600 hover:text-[#A37A57] transition-colors">Mercato</a>
+            </nav>
+            <button id="mobile-menu-button" class="md:hidden text-gray-700 focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </div>
+        <div id="mobile-menu" class="hidden md:hidden">
+            <a href="#visione" class="block py-2 px-6 text-sm text-gray-700 hover:bg-gray-100">La Visione</a>
+            <a href="#esperienza" class="block py-2 px-6 text-sm text-gray-700 hover:bg-gray-100">L'Esperienza</a>
+            <a href="#progetto" class="block py-2 px-6 text-sm text-gray-700 hover:bg-gray-100">Il Progetto</a>
+            <a href="#mercato" class="block py-2 px-6 text-sm text-gray-700 hover:bg-gray-100">Mercato</a>
+        </div>
+    </header>
+
+    <main>
+        <section id="hero" class="min-h-screen flex items-center bg-cover bg-center bg-no-repeat" style="background-image: url('https://placehold.co/1920x1080/231F20/FDFBF8?text=Castello+di+Roccanera');">
+            <div class="absolute inset-0 bg-black/60"></div>
+            <div class="container mx-auto px-6 text-center relative z-10">
+                <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-4">Il Castello di Roccanera</h1>
+                <h2 class="text-2xl md:text-4xl font-semibold text-white/90 mb-8">L'Ultimo Enigma del Conte</h2>
+                <p class="max-w-3xl mx-auto text-lg text-white/80 mb-12">
+                    Un'esperienza rivoluzionaria che fonde il brivido di un'escape room con l'emozione di una caccia al tesoro storica, in un contesto autentico e ricco di mistero.
+                </p>
+                <a href="#visione" class="bg-[#A37A57] text-white font-bold py-3 px-8 rounded-full hover:bg-[#8e6a4d] transition-transform transform hover:scale-105">Scopri il Progetto</a>
+            </div>
+        </section>
+
+        <section id="visione" class="py-20 md:py-32 bg-white/80 backdrop-blur-sm">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">La Visione</h2>
+                    <p class="max-w-3xl mx-auto text-lg text-gray-600">Trasformare la visita a un castello in un'avventura immersiva, stimolando apprendimento, pensiero critico e collaborazione attraverso una narrativa avvincente.</p>
+                </div>
+
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="bg-white p-8 rounded-lg shadow-sm border border-gray-200/50">
+                        <h3 class="text-2xl font-bold text-[#A37A57] mb-3 font-display">Contesto Culturale</h3>
+                        <p class="text-gray-600">Il Castello di Roccanera, una fortezza medievale ricca di storia e leggende, diventa il palcoscenico di un'immensa escape room storica per svelare i segreti del suo ultimo, enigmatico Conte.</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-lg shadow-sm border border-gray-200/50">
+                        <h3 class="text-2xl font-bold text-[#A37A57] mb-3 font-display">Target di Riferimento</h3>
+                        <p class="text-gray-600">Famiglie con adolescenti, gruppi di amici, appassionati di storia e turisti in cerca di esperienze interattive che uniscano sfida intellettuale e divertimento collaborativo.</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-lg shadow-sm border border-gray-200/50 md:col-span-2 lg:col-span-1">
+                        <h3 class="text-2xl font-bold text-[#A37A57] mb-3 font-display">Obiettivi Chiave</h3>
+                        <ul class="space-y-2 text-gray-600 list-inside">
+                            <li class="flex items-start"><span class="text-[#A37A57] mr-2 mt-1">◆</span>Apprendimento storico coinvolgente.</li>
+                            <li class="flex items-start"><span class="text-[#A37A57] mr-2 mt-1">◆</span>Sviluppo del problem solving.</li>
+                            <li class="flex items-start"><span class="text-[#A37A57] mr-2 mt-1">◆</span>Promozione del teamwork.</li>
+                            <li class="flex items-start"><span class="text-[#A37A57] mr-2 mt-1">◆</span>Esplorazione approfondita del sito.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="esperienza" class="py-20 md:py-32 bg-[#F3EFEA]/80 backdrop-blur-sm">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">L'Esperienza di Gioco</h2>
+                    <p class="max-w-3xl mx-auto text-lg text-gray-600">Un'avventura unica che intreccia caccia al tesoro, enigmi logici e tecnologia avanzata per dare vita alla storia.</p>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-lg p-4 md:p-8">
+                    <div class="mb-8">
+                        <h3 class="text-2xl font-bold text-center text-[#A37A57] mb-4 font-display">La Narrativa: L'Ultimo Enigma del Conte</h3>
+                        <p class="text-center text-gray-600 italic max-w-4xl mx-auto">"Secoli fa, il Conte Alarico di Roccanera scomparve senza lasciare traccia, se non una serie di enigmi. Voi, 'Cercatori di Verità', siete stati convocati. Riuscirete a trovare il suo lascito prima che il tempo scada?"</p>
+                    </div>
+
+                    <div>
+                        <div class="mb-6 border-b border-gray-200 flex justify-center flex-wrap">
+                            <button class="tab-btn py-3 px-5 text-sm md:text-base font-semibold border-b-2 transition-colors duration-300 tab-active" data-tab="tab1">Caccia al Tesoro</button>
+                            <button class="tab-btn py-3 px-5 text-sm md:text-base font-semibold border-b-2 transition-colors duration-300 tab-inactive" data-tab="tab2">Enigmi Escape Room</button>
+                            <button class="tab-btn py-3 px-5 text-sm md:text-base font-semibold border-b-2 transition-colors duration-300 tab-inactive" data-tab="tab3">Realtà Aumentata</button>
+                            <button class="tab-btn py-3 px-5 text-sm md:text-base font-semibold border-b-2 transition-colors duration-300 tab-inactive" data-tab="tab4">Interazione Fisica</button>
+                        </div>
+
+                        <div id="tab-content" class="mt-6">
+                            <div id="tab1" class="tab-pane">
+                                <h4 class="text-xl font-bold text-gray-800 mb-2">Esplorazione e Indizi</h4>
+                                <p class="text-gray-600">I giocatori usano una "Mappa del Cercatore" sull'app per esplorare il castello. QR code nascosti, dettagli su affreschi e messaggi criptici guidano il gruppo da un punto all'altro, svelando la storia passo dopo passo.</p>
+                            </div>
+                            <div id="tab2" class="tab-pane hidden">
+                                <h4 class="text-xl font-bold text-gray-800 mb-2">Blocco e Sequenze Logiche</h4>
+                                <p class="text-gray-600">Stanze specifiche del castello diventano mini-escape room. I team devono risolvere enigmi interconnessi (numerici, logici, di assemblaggio) per sbloccare il passaggio successivo o ottenere un oggetto chiave.</p>
+                            </div>
+                            <div id="tab3" class="tab-pane hidden">
+                                <h4 class="text-xl font-bold text-gray-800 mb-2">Proiezioni Storiche</h4>
+                                <p class="text-gray-600">Tramite l'app, i giocatori attivano proiezioni in Realtà Aumentata. "Fantasmi" del passato possono sussurrare indizi, mostrare come aprire passaggi segreti o ricostruire meccanismi scomparsi.</p>
+                            </div>
+                            <div id="tab4" class="tab-pane hidden">
+                                <h4 class="text-xl font-bold text-gray-800 mb-2">Oggetti Fisici e Virtuali Sincronizzati</h4>
+                                <p class="text-gray-600">Alcuni enigmi richiedono di manipolare oggetti fisici (riproduzioni sicure) che, grazie a sensori IoT, attivano eventi nell'app. Viceversa, un puzzle risolto sull'app può sbloccare un meccanismo reale.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="progetto" class="py-20 md:py-32 bg-white/80 backdrop-blur-sm">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">Il Piano di Progetto</h2>
+                    <p class="max-w-3xl mx-auto text-lg text-gray-600">Un approccio strutturato in tre fasi per garantire design, sviluppo e lancio di alta qualità, con un budget chiaro e una timeline definita.</p>
+                </div>
+
+                <div class="grid lg:grid-cols-5 gap-12 items-center">
+                    <div class="lg:col-span-2">
+                        <h3 class="text-3xl font-bold text-gray-800 mb-4 font-display">Stima del Budget</h3>
+                        <p class="text-gray-600 mb-6">Il costo totale stimato varia da €352.000 a €595.000, suddiviso nelle fasi chiave del progetto. Il grafico mostra la distribuzione percentuale dei costi massimi stimati per ogni fase.</p>
+                        <ul class="space-y-2 text-gray-600">
+                           <li><span class="font-semibold">Fase 1 - Design & Contenuti:</span> 24%</li>
+                           <li><span class="font-semibold">Fase 2 - Sviluppo & Integrazione:</span> 58%</li>
+                           <li><span class="font-semibold">Fase 3 - Implementazione & Lancio:</span> 18%</li>
+                        </ul>
+                    </div>
+                    <div class="lg:col-span-3">
+                        <div class="chart-container">
+                            <canvas id="budgetChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="mercato" class="py-20 md:py-32 bg-[#F3EFEA]/80 backdrop-blur-sm">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">Mercato e Prospettive</h2>
+                    <p class="max-w-3xl mx-auto text-lg text-gray-600">Il progetto si inserisce in mercati in forte crescita, offrendo un'esperienza unica con un enorme potenziale di sviluppo futuro.</p>
+                </div>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="bg-white p-8 rounded-lg shadow-sm border border-gray-200/50">
+                        <h3 class="text-2xl font-bold text-[#A37A57] mb-3 font-display">Analisi di Mercato</h3>
+                        <p class="text-gray-600">L'esperienza intercetta il boom delle escape room e la crescente domanda di "edutainment". L'ambientazione in un castello storico offre un vantaggio competitivo unico, differenziando l'offerta da altre attrazioni.</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-lg shadow-sm border border-gray-200/50">
+                        <h3 class="text-2xl font-bold text-[#A37A57] mb-3 font-display">Prospettive Future</h3>
+                        <ul class="space-y-2 text-gray-600 list-inside">
+                            <li class="flex items-start"><span class="text-[#A37A57] mr-2 mt-1">◆</span>Aggiunta di nuovi enigmi e storie.</li>
+                            <li class="flex items-start"><span class="text-[#A37A57] mr-2 mt-1">◆</span>Eventi speciali e modalità competitive.</li>
+                            <li class="flex items-start"><span class="text-[#A37A57] mr-2 mt-1">◆</span>Estensione del format ad altri castelli.</li>
+                            <li class="flex items-start"><span class="text-[#A37A57] mr-2 mt-1">◆</span>Merchandising e contenuti premium.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-[#231F20] text-white py-12">
+        <div class="container mx-auto px-6 text-center">
+            <p class="font-display text-2xl mb-2">Il Castello di Roccanera</p>
+            <p class="text-gray-400">Unisciti a noi e diventa parte della leggenda.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            const navLinks = document.querySelectorAll('.nav-link, #mobile-menu a');
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (!mobileMenu.classList.contains('hidden')) {
+                        mobileMenu.classList.add('hidden');
+                    }
+                });
+            });
+            
+            const sections = document.querySelectorAll('section[id]');
+            const navHeaderLinks = document.querySelectorAll('#header nav a');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navHeaderLinks.forEach(link => {
+                            link.classList.toggle('active-nav', link.getAttribute('href').substring(1) === entry.target.id);
+                        });
+                    }
+                });
+            }, { rootMargin: "-50% 0px -50% 0px" });
+            sections.forEach(section => observer.observe(section));
+
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const tabPanes = document.querySelectorAll('.tab-pane');
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const tabId = button.dataset.tab;
+                    
+                    tabButtons.forEach(btn => {
+                        btn.classList.remove('tab-active');
+                        btn.classList.add('tab-inactive');
+                    });
+                    button.classList.add('tab-active');
+                    button.classList.remove('tab-inactive');
+
+                    tabPanes.forEach(pane => {
+                        if (pane.id === tabId) {
+                            pane.classList.remove('hidden');
+                        } else {
+                            pane.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+
+            const budgetData = {
+                labels: ['Design & Contenuti (€140k)', 'Sviluppo & Integrazione (€345k)', 'Lancio & Implementazione (€110k)'],
+                datasets: [{
+                    label: 'Distribuzione Budget Massimo Stimato',
+                    data: [140000, 345000, 110000],
+                    backgroundColor: [
+                        '#A37A57',
+                        '#6B7280',
+                        '#D1D5DB'
+                    ],
+                    borderColor: '#FDFBF8',
+                    borderWidth: 4,
+                    hoverOffset: 8
+                }]
+            };
+
+            const budgetConfig = {
+                type: 'doughnut',
+                data: budgetData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#4B4B4B',
+                                font: {
+                                    family: "'Inter', sans-serif",
+                                    size: 12
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed !== null) {
+                                        label += new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(context.parsed);
+                                    }
+                                    return label;
+                                }
+                            },
+                            backgroundColor: '#231F20',
+                            titleFont: {
+                                family: "'Cormorant Garamond', serif",
+                                size: 16
+                            },
+                            bodyFont: {
+                                family: "'Inter', sans-serif"
+                            }
+                        }
+                    },
+                    cutout: '60%'
+                }
+            };
+            
+            const budgetChartCtx = document.getElementById('budgetChart').getContext('2d');
+            new Chart(budgetChartCtx, budgetConfig);
+        });
+    </script>
+</body>
+</html>
